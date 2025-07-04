@@ -7,9 +7,9 @@ let productos = []
 app.get('/', (req, res) => {
 	res.json(productos)
 });
-app.get('/:id', (req, res) => {
-	const { id } = req.params
-	const productoFiltrado = productos.filter(p => p.id === parseInt(id))
+app.get('/:pid', (req, res) => {
+	const { pid } = req.params
+	const productoFiltrado = productos.filter(p => p.id === parseInt(pid))
 	res.json(productoFiltrado)
 });
 app.post('/', (req, res) => {
@@ -28,10 +28,10 @@ app.post('/', (req, res) => {
 	productos.push(nuevoProducto)
 	res.status(200).json(nuevoProducto)
 });
-app.put('/:id', (req, res) => {
+app.put('/:pid', (req, res) => {
 	const {title, description, code, price, status, stock , category , thumbnails} = req.body
-	const {id} = req.params
-	productoFiltrado = productos.find(p => p.id === parseInt(id))
+	const {pid} = req.params
+	productoFiltrado = productos.find(p => p.id === parseInt(pid))
 	productoFiltrado.title = title ||  productoFiltrado.title
 	productoFiltrado.description = description ||  productoFiltrado.description
 	productoFiltrado.code = code ||  productoFiltrado.code
@@ -41,8 +41,15 @@ app.put('/:id', (req, res) => {
 	productoFiltrado.category = category ||  productoFiltrado.category
 	productoFiltrado.thumbnails = thumbnails ||  productoFiltrado.thumbnails
 
-	res.json(productoFiltrado)
-	res.status(200).json(nuevoProducto)
+	res.status(200).json(productoFiltrado)
+});
+
+app.delete("/:pid", (req, res) => {
+	const {pid} = req.params
+	productos = productos.filter(p => p.id !== parseInt(pid))
+
+	res.status(200).json(productos)
+	
 });
 
 app.listen(PORT, () => {
